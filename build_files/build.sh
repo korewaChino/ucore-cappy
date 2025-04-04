@@ -22,6 +22,11 @@ dnf5 install -y --nogpgcheck \
     fastfetch \
     zellij \
     btrfsd \
+    cockpit-ostree \
+    cockpit-packagekit \
+    cockpit-selinux \
+    cockpit-system \
+    cockpit-storaged \
     btrfs-heatmap
     
 systemctl disable firewalld
