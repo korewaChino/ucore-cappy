@@ -26,6 +26,7 @@ dnf5 install -y --nogpgcheck \
     
 systemctl disable firewalld
 systemctl enable cockpit
+systemctl enable multipathd
     
 # Use a COPR Example:
 #
