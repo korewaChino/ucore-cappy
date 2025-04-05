@@ -28,6 +28,7 @@ dnf5 install -y --nogpgcheck \
     cockpit-system \
     cockpit-storaged \
     pv \
+    https://github.com/k3s-io/k3s-selinux/releases/download/v1.6.latest.1/k3s-selinux-1.6-1.coreos.noarch.rpm \
     btrfs-heatmap
     
 systemctl disable firewalld
