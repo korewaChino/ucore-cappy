@@ -27,6 +27,7 @@ dnf5 install -y --nogpgcheck \
     cockpit-selinux \
     cockpit-system \
     cockpit-storaged \
+    pv \
     btrfs-heatmap
     
 systemctl disable firewalld
