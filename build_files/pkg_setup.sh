@@ -29,6 +29,8 @@ package_list=(
     bat
     bat-extras
     catimg
+    bees
+    ncdu
 )
 
 # Function to install packages and setup repositories
