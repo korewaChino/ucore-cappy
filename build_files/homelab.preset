@@ -1,0 +1,10 @@
+# Cappy's Homelab systemd preset
+
+disable firewalld.service
+enable cockpit.service
+enable multipathd.service
+enable avahi-daemon.*
+
+# in systemd we trust
+disable chronyd
+enable systemd-timesyncd

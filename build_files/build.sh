@@ -2,44 +2,13 @@
 
 set -ouex pipefail
 
-### Install packages
+pushd "$(dirname "${BASH_SOURCE[0]}")"
+source ./pkg_setup.sh
+source ./svc.sh
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
-dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release terra-release-extras "dnf5-command(config-manager)"
-# this installs a package from fedora repos
-# get version
-VERSION_ID=$(grep -oP '(?<=VERSION_ID=)[^"]*' /etc/os-release)
-# rpm --import https://repos.fyralabs.com/terra${VERSION_ID}/key.asc
-# HACK: workaround for dnf5#2134
-dnf5 config-manager setopt terra-nvidia.enabled=1 terra-nvidia.repo_gpgcheck=0 terra.repo_gpgcheck=0
-dnf5 install -y --nogpgcheck \
-    nano \
-    btop \
-    micro \
-    fastfetch \
-    zellij \
-    btrfsd \
-    cockpit-ostree \
-    cockpit-packagekit \
-    cockpit-selinux \
-    cockpit-system \
-    cockpit-storaged \
-    pv \
-    https://github.com/k3s-io/k3s-selinux/releases/download/v1.6.latest.1/k3s-selinux-1.6-1.coreos.noarch.rpm \
-    btrfs-heatmap
-    
-systemctl disable firewalld
-systemctl enable cockpit
-systemctl enable multipathd
-    
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# Source package setup script and call function
+setup_packages
 
-#### Example for enabling a System Unit File
+# Setup systemd
+svcs
+
