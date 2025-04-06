@@ -232,7 +232,6 @@ This provides users a method of verifying the image.
     cosign generate-key-pair
     ```
 
-    
     - Do NOT put in a password when it asks you to, just press enter. The signing key will be used in GitHub Actions and will not work if it is encrypted.
 
 > [!WARNING]

@@ -31,6 +31,8 @@ package_list=(
     catimg
     bees
     ncdu
+    cyrus-sasl
+    cyrus-sasl-plain
 )
 
 # Function to install packages and setup repositories
