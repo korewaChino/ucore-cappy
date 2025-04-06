@@ -29,7 +29,6 @@ package_list=(
     bat
     bat-extras
     catimg
-    bees
     ncdu
     cyrus-sasl
     cyrus-sasl-plain
