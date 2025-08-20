@@ -32,6 +32,7 @@ package_list=(
     ncdu
     cyrus-sasl
     cyrus-sasl-plain
+    bees
 )
 
 # Function to install packages and setup repositories
