@@ -33,6 +33,7 @@ package_list=(
     cyrus-sasl
     cyrus-sasl-plain
     bees
+    borgbackup
 )
 
 # Function to install packages and setup repositories
