@@ -19,4 +19,6 @@ svcs() {
     mkdir -p /usr/lib/systemd/system
 
     cp -av systemd/. /usr/lib/systemd/system/
+    
+    cp -av root/. /.
 }
