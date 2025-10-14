@@ -35,6 +35,7 @@ package_list=(
     bees
     borgbackup
     glances
+    netcat
 )
 
 # Function to install packages and setup repositories
