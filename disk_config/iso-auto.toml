@@ -5,6 +5,7 @@ zerombr
 clearpart --all --initlabel --disklabel=gpt
 autopart --noswap --type=btrfs
 network --bootproto=dhcp --device=link --activate --onboot=on
+user --name=cappy --groups=wheel --password=$y$j9T$CaHZ/Cb35R6PvhMeWrMw61$cV9yN1.L7TRNkCSrqtgA26HKAXyIu/tab9gBeMcvEY8
 %post
 bootc switch --mutate-in-place --transport registry ghcr.io/korewachino/ucore-cappy:latest
 %end
