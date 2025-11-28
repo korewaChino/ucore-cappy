@@ -52,10 +52,6 @@ setup_packages() {
 
     # Get version
     VERSION_ID=$(grep -oP '(?<=VERSION_ID=)[^"]*' /etc/os-release)
-    # rpm --import https://repos.fyralabs.com/terra${VERSION_ID}/key.asc
-
-    # HACK: workaround for dnf5#2134
-    dnf5 config-manager setopt terra-nvidia.enabled=1 terra-nvidia.repo_gpgcheck=0 terra.repo_gpgcheck=0
 
     # Install packages
     dnf5 install -y --nogpgcheck "${package_list[@]}"
