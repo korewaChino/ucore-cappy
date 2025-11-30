@@ -5,8 +5,14 @@ After=getty@tty1.service
 Requires=getty@tty1.service
 
 [Service]
+User=root
 Type=oneshot
 ExecStart=/bin/sh -c 'TERM=linux setterm -blank force >/dev/tty1 </dev/tty1'
+ExecStart=/bin/sh -c '
+  if [ -d /sys/class/backlight/intel_backlight ]; then
+    echo 0 > /sys/class/backlight/intel_backlight/brightness
+  fi
+'
 
 [Install]
 WantedBy=multi-user.target
