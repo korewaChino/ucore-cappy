@@ -13,13 +13,15 @@ svcs() {
 
     # Copy the preset file to the systemd preset directory
     cp $preset_file /usr/lib/systemd/system-preset/
-    systemctl preset-all
-
 
     # Install some systemd dropin files
     mkdir -p /usr/lib/systemd/system
 
     cp -av systemd/. /usr/lib/systemd/system/
-    
+
+
     cp -av root/. /.
+    systemctl preset-all
+    systemctl enable vt-blank.service
+    systemctl enable vt-blank.timer
 }

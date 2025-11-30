@@ -1,0 +1,12 @@
+# /etc/systemd/system/vt-blank.service
+[Unit]
+Description=Automatically blank VT1 after login screen appears
+After=getty@tty1.service
+Requires=getty@tty1.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'TERM=linux setterm -blank force >/dev/tty1 </dev/tty1'
+
+[Install]
+WantedBy=multi-user.target
