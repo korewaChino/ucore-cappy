@@ -13,6 +13,7 @@ svcs() {
 
     # Copy the preset file to the systemd preset directory
     cp $preset_file /usr/lib/systemd/system-preset/
+    systemctl preset-all
 
 
     # Install some systemd dropin files
