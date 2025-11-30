@@ -4,7 +4,7 @@ disable firewalld.service
 enable cockpit.service
 enable multipathd.service
 enable avahi-daemon.*
-
+enable bootc-fetch-apply-updates.timer
 # in systemd we trust
 disable chronyd
 enable systemd-timesyncd
