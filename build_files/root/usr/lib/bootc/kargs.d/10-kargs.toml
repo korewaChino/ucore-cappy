@@ -1,1 +1,1 @@
-kargs = ["mitigations=auto"]
+kargs = ["mitigations=auto,nosmt=off", "consoleblank=300"]
