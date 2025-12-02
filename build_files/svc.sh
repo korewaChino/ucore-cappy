@@ -6,7 +6,7 @@ set -ouex pipefail
 
 
 svcs() {
-    local preset_file="homelab.preset"
+    local preset_file="00-homelab.preset"
 
     # Ensure the target directory exists
     mkdir -p /usr/lib/systemd/system-preset/
