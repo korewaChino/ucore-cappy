@@ -24,4 +24,7 @@ svcs() {
     systemctl preset-all
     systemctl enable vt-blank.service
     systemctl enable vt-blank.timer
+    systemctl mask zincati.service
+    systemctl disable firewalld.service
+    systemctl mask setroubleshootd
 }
