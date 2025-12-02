@@ -38,6 +38,15 @@ package_list=(
     netcat
 )
 
+install_kompose() {
+    KOMPOSE_VERSION="v1.37.0"
+    TMP_DIR=$(mktemp -d)
+    pushd "$TMP_DIR" || exit 1
+    curl -L https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VERSION}/kompose-linux-amd64 -o kompose
+    chmod +x kompose
+    mv kompose /usr/bin/kompose
+}
+
 # Function to install packages and setup repositories
 setup_packages() {
     set -ouex pipefail
@@ -55,6 +64,7 @@ setup_packages() {
 
     # Install packages
     dnf5 install -y --nogpgcheck "${package_list[@]}"
+    install_kompose
 }
 
 # If this script is being executed directly, run the function
