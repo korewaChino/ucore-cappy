@@ -6,9 +6,7 @@ set -ouex pipefail
 
 
 svcs() {
-    local preset_file="00-homelab.preset"
-    pwd
-    ls -la
+    local preset_file="/ctx/00-homelab.preset"
 
     # Ensure the target directory exists
     mkdir -p /usr/lib/systemd/system-preset/
@@ -19,10 +17,10 @@ svcs() {
     # Install some systemd dropin files
     mkdir -p /usr/lib/systemd/system
 
-    cp -av systemd/. /usr/lib/systemd/system/
+    cp -av /ctx/systemd/. /usr/lib/systemd/system/
 
 
-    cp -av root/. /.
+    cp -av /ctx/root/. /.
     systemctl preset-all
     systemctl enable vt-blank.service
     systemctl enable vt-blank.timer
