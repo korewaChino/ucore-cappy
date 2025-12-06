@@ -27,4 +27,5 @@ svcs() {
     systemctl mask zincati.service
     systemctl disable firewalld.service
     systemctl mask setroubleshootd
+    systemctl enable avahi-daemon.socket
 }
