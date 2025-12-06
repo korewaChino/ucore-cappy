@@ -36,6 +36,8 @@ package_list=(
     borgbackup
     glances
     netcat
+    nss-mdns
+    avahi
 )
 
 install_kompose() {
