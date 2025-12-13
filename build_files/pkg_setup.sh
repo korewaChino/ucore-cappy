@@ -57,6 +57,10 @@ install_k3s() {
     export INSTALL_K3S_BIN_DIR="/usr/bin"
     # Don't actually install anything
     export INSTALL_K3S_SYSTEMD_DIR="/tmp/k3s-systemd"
+    export INSTALL_K3S_SKIP_ENABLE=true
+    export INSTALL_K3S_SKIP_START=true
+    curl -sfL https://get.k3s.io | sh - 
+    rm -rf /tmp/k3s-systemd
     
 }
 
@@ -78,6 +82,7 @@ setup_packages() {
     # Install packages
     dnf5 install -y --nogpgcheck "${package_list[@]}"
     install_kompose
+    install_k3s
 }
 
 # If this script is being executed directly, run the function
