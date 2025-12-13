@@ -1,22 +1,26 @@
-# image-template
+# Cappy's Compute Image
 
-# Purpose
+This image is based on UCore, with some additional customizations for my personal use, especially as a Kubernetes node image
 
-This repository is meant to be a template for building your own custom Universal Blue image. This template is the recommended way to make customizations to any image published by the Universal Blue Project:
-- [Aurora](https://getaurora.dev/)
-- [Bazzite](https://bazzite.gg/)
-- [Bluefin](https://projectbluefin.io/)
-- [uCore](https://projectucore.io/)
-- [main](https://github.com/ublue-os/main/)
-- [hwe](https://github.com/ublue-os/hwe/)
+Currently based on UCore, migration to Ultramarine bootc is planned in the future.
+This image is essentially my personal staging ground for Kanopy, Fyra Labs' prototype Kubernetes distribution system
 
-or any other base image if you want to start from scratch:
+## Intentions
 
-- Fedora: `quay.io/fedora/fedora-bootc:41`
-- CentOS Stream 9: `quay.io/centos-bootc/centos-bootc:stream9`
-- CentOS Stream 10 (in development): `quay.io/centos-bootc/centos-bootc:stream10`
+Currently this runs K3s with some really cursed tweaks since I can't migrate off K3s yet, but eventually K3s will be removed and replaced with a more standard Kubernetes installation.
 
-This template includes a Containerfile and a Github workflow for building the container image, signing, and proper metadata to be listed on [artifacthub](https://artifacthub.io/). As soon as the workflow is enabled in your repository, it will build the container image and push it to the Github Container Registry.
+## Features
+
+In addition to the UCore HCI image, this image adds:
+
+- K3s, with modified configs to work on CRI-O and custom networking
+- Wireguard
+- etcd
+- CRI-O
+- watchdogd
+- btrfsd
+- NVIDIA drivers and container runtime
+
 
 # Prerequisites
 

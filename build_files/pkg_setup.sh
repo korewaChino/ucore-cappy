@@ -38,6 +38,8 @@ package_list=(
     netcat
     nss-mdns
     avahi
+    etcd
+    cri-o
 )
 
 install_kompose() {
@@ -47,6 +49,15 @@ install_kompose() {
     curl -L https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VERSION}/kompose-linux-amd64 -o kompose
     chmod +x kompose
     mv kompose /usr/bin/kompose
+}
+
+install_k3s() {
+    # We already install k3s-selinux above, so skip that step here
+    export INSTALL_K3S_SKIP_SELINUX_RPM=true
+    export INSTALL_K3S_BIN_DIR="/usr/bin"
+    # Don't actually install anything
+    export INSTALL_K3S_SYSTEMD_DIR="/tmp/k3s-systemd"
+    
 }
 
 # Function to install packages and setup repositories
