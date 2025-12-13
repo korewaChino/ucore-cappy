@@ -55,6 +55,7 @@ install_k3s() {
     # We already install k3s-selinux above, so skip that step here
     export INSTALL_K3S_SKIP_SELINUX_RPM=true
     export INSTALL_K3S_BIN_DIR="/usr/bin"
+    mkdir -p /tmp/k3s-systemd/
     # Don't actually install anything
     export INSTALL_K3S_SYSTEMD_DIR="/tmp/k3s-systemd"
     export INSTALL_K3S_SKIP_ENABLE=true
