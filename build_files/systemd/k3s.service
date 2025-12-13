@@ -3,7 +3,8 @@ Description=Lightweight Kubernetes
 Documentation=https://k3s.io
 Wants=network-online.target
 After=network-online.target
-After=etcd.service
+#After=etcd.service
+After=systemd-resolved.service
 After=crio.service
 
 [Install]
