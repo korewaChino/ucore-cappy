@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/ucore-hci:stable-nvidia
+FROM ghcr.io/ublue-os/ucore-hci:stable-nvidia-lts
 
 RUN mkdir -p /etc/rancher/k3s /var/lib/rancher/k3s /var/lib/rancher/k3s
 RUN if [ -f /etc/sysconfig/selinux ]; then \
