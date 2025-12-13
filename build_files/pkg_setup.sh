@@ -60,6 +60,7 @@ install_k3s() {
     export INSTALL_K3S_SYSTEMD_DIR="/tmp/k3s-systemd"
     export INSTALL_K3S_SKIP_ENABLE=true
     export INSTALL_K3S_SKIP_START=true
+    export INSTALL_K3S_CHANNEL=latest
     curl -sfL https://get.k3s.io | sh - 
     rm -rf /tmp/k3s-systemd
     
