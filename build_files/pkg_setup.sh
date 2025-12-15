@@ -40,6 +40,7 @@ package_list=(
     avahi
     etcd
     cri-o
+    containernetworking-plugins
 )
 
 install_kompose() {

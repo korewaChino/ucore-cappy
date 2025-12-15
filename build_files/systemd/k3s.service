@@ -3,8 +3,6 @@ Description=Lightweight Kubernetes
 Documentation=https://k3s.io
 Wants=network-online.target
 After=network-online.target
-#After=etcd.service
-After=systemd-resolved.service
 After=crio.service
 
 [Install]
@@ -27,6 +25,4 @@ TimeoutStartSec=0
 Restart=always
 RestartSec=5s
 ExecStartPre=/bin/sh -xc '! /usr/bin/systemctl is-enabled --quiet nm-cloud-setup.service 2>/dev/null'
-ExecStartPre=-/sbin/modprobe br_netfilter
-ExecStartPre=-/sbin/modprobe overlay
 ExecStart=/usr/bin/k3s server --selinux
