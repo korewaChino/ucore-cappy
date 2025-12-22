@@ -29,4 +29,5 @@ svcs() {
     systemctl mask setroubleshootd
     systemctl enable avahi-daemon.socket
     systemctl enable crio.service
+    systemctl enable no-turbo.service
 }
