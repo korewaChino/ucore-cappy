@@ -1,6 +1,6 @@
 export image_name := env("IMAGE_NAME", "ucore-cappy") # output image name, usually same as repo name, change as needed
 export default_tag := env("DEFAULT_TAG", "latest")
-export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest")
+export bib_image := env("BIB_IMAGE", "ghcr.io/korewachino/bootc-image-builder:latest")
 
 alias build-vm := build-qcow2
 alias rebuild-vm := rebuild-qcow2
@@ -43,6 +43,10 @@ clean:
     rm -f changelog.md
     rm -f output.env
     rm -f output/
+
+[group('Utility')]
+build-bib:
+    sudo podman build --pull=newer --tag "${bib_image}" -f Containerfile.bib .
 
 # Sudo Clean Repo
 [group('Utility')]

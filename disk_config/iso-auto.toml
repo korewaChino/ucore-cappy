@@ -2,11 +2,14 @@
 contents = """
 text --non-interactive
 zerombr
+
 clearpart --all --initlabel --disklabel=gpt
 autopart --noswap --type=btrfs
 network --bootproto=dhcp --device=link --activate --onboot=on
 user --name=cappy --groups=wheel --iscrypted --password='$y$j9T$NlhgMqx2O9Ej0g7esW/3W/$WMWyra7vEgfXg6ox5iNbvZHuLJShv95funlzthGPu7/'
 rootpw --iscrypted '$y$j9T$NlhgMqx2O9Ej0g7esW/3W/$WMWyra7vEgfXg6ox5iNbvZHuLJShv95funlzthGPu7/'
+user --name=aikoyori --groups=wheel
+user --name=eri --groups=wheel
 sshkey --username=cappy "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINBx7F+TYn/bjOA2nubAi5JaoAlzoMfIx3rvP4k5iOmA cappy@fyralabs.com"
 sshkey --username=root "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINBx7F+TYn/bjOA2nubAi5JaoAlzoMfIx3rvP4k5iOmA cappy@fyralabs.com"
 %post

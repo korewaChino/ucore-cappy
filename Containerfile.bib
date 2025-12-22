@@ -1,0 +1,3 @@
+FROM quay.io/centos-bootc/bootc-image-builder:latest
+
+RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra43' terra-release
