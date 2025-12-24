@@ -41,6 +41,15 @@ package_list=(
     etcd
     cri-o
     containernetworking-plugins
+    ceph-common
+    cephfs-shell
+    cephfs-top
+    ceph-selinux
+    ceph-volume
+    ceph-test
+    samba-vfs-cephfs
+    libcephsqlite
+    nfs-ganesha-ceph
 )
 
 install_kompose() {
