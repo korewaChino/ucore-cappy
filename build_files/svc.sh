@@ -30,4 +30,6 @@ svcs() {
     systemctl enable avahi-daemon.socket
     systemctl enable crio.service
     systemctl enable no-turbo.service
+    systemctl enable tuned
+    echo "throughput-performance" > /etc/tuned/active_profile
 }
