@@ -50,6 +50,11 @@ package_list=(
     samba-vfs-cephfs
     libcephsqlite
     nfs-ganesha-ceph
+    tuned
+    tuned-profiles-atomic
+    tuned-profiles-realtime
+    tuned-switcher
+    tuned-utils
 )
 
 install_kompose() {
