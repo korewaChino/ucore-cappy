@@ -1,0 +1,7 @@
+[plugins]
+
+  [plugins."io.containerd.grpc.v1.cri"]
+
+    [plugins.'io.containerd.cri.v1.runtime'.cni]
+      bin_dirs = ['/opt/cni/bin']
+      conf_dir = '/etc/cni/net.d'
