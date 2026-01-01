@@ -1,0 +1,21 @@
+# This service offers a workaround to disable some broken ACPI interrupts
+# that may cause system instability on certain commodity hardware.
+
+# This is useful for using some consumer laptops as servers where specific ACPI
+# interrupts (like those for lid switch or power button) may not be handled
+# correctly by the firmware, leading to system overloads from continuous interrupt
+# storms.
+
+[Unit]
+Description=Disable broken ACPI %i interrupt
+DefaultDependencies=no
+After=sysinit.target
+Before=basic.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo disable > /sys/firmware/acpi/interrupts/%i'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=basic.target
