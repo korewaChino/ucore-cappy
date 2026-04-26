@@ -8,6 +8,7 @@ package_list=(
     fastfetch
     zellij
     btrfsd
+    cockpit
     cockpit-ostree
     cockpit-packagekit
     cockpit-selinux
@@ -95,6 +96,10 @@ setup_packages() {
 
     # Get version
     VERSION_ID=$(grep -oP '(?<=VERSION_ID=)[^"]*' /etc/os-release)
+    
+    # remove cockpit quadlet from ucore
+    # UCore comes with the Quadlet version of Cockpit which... does not work well
+    rm -f /usr/lib/systemd/system/cockpit.service
 
     # Install packages
     dnf5 install -y --nogpgcheck "${package_list[@]}"
