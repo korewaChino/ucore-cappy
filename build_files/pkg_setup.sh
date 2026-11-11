@@ -56,6 +56,60 @@ package_list=(
     tuned-profiles-realtime
     tuned-switcher
     tuned-utils
+    # Upstream Kubernetes, for the kubeadm migration. These come from
+    # pkgs.k8s.io via the repo copied in below, not from Fedora.
+    #
+    # kubelet.service is deliberately NOT enabled -- see 00-homelab.preset. Both
+    # it and k3s's kubelet bind 10250, so they cannot run at once; until the
+    # migration cuts over these are just binaries on disk.
+    kubelet
+    kubeadm
+    kubectl
+    # CNI plugins to /opt/cni/bin and crictl. Fedora does not carry
+    # kubernetes-cni, and its containernetworking-plugins land in
+    # /usr/libexec/cni, so the two do not collide.
+    kubernetes-cni
+    cri-tools
+    # Hypervisors. cloud-hypervisor is the point here: it comes from terra
+    # (54.1, matching upstream v54.1) because Fedora only ships libvirt's
+    # cloud-hypervisor *driver*, never the VMM. The package carries
+    # cloud-hypervisor, ch-remote and the vhost-user backends
+    # (vhost_user_block, vhost_user_net), which is the full surface for driving
+    # VMs through its own API rather than through libvirt.
+    #
+    # edk2-cloud-hypervisor-bin is CLOUDHV.fd. cloud-hypervisor has no legacy
+    # BIOS path, so a UEFI firmware is mandatory for any guest that boots.
+    #
+    # The libvirt stack is separate and stays conventional: qemu is the driver
+    # virt-install and virt-manager expect, and libvirt-daemon-driver-ch lets
+    # libvirt manage cloud-hypervisor domains too, which is handy for
+    # comparison against driving it directly. Installing the driver causes
+    # virtchd.socket to be enabled by the distro preset; nothing is enabled
+    # here by hand.
+    #
+    # qemu-kvm-core rather than the qemu-kvm meta. Measured: both resolve to
+    # the same 568-package transaction, because the bulk arrives as weak
+    # dependencies of libvirt-daemon-kvm (which recommends qemu-kvm) rather
+    # than from anything named here. Set install_weak_deps=False and libvirt's
+    # share drops to 412, but that flag is global to this install and would
+    # change what every other package in package_list pulls in, so it is not
+    # set. core is still the right name: it is the binary libvirt execs.
+    cloud-hypervisor
+    edk2-cloud-hypervisor-bin
+    libvirt
+    libvirt-client
+    libvirt-daemon-kvm
+    libvirt-daemon-driver-ch
+    virt-install
+    qemu-kvm-core
+    swtpm
+    edk2-ovmf
+    virtiofsd
+    # Deliberately NOT libvirt-daemon-config-network: that package defines the
+    # 192.168.122.0/24 NAT network and marks it autostart, which would put an
+    # unmanaged virbr0 and a dnsmasq on every node the moment virtnetworkd
+    # comes up. VM networking here wants a bridge or L2 segment the cluster
+    # knows about, so the default network is left undefined.
 )
 
 install_kompose() {
@@ -93,6 +147,13 @@ setup_packages() {
     # List of rpmfusion packages can be found here:
     # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
     dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release terra-release-extras "dnf5-command(config-manager)"
+
+    # The kubernetes.repo that ships in the image is staged into /ctx by the
+    # Containerfile and only copied into / by the svc stage, which runs after
+    # this one. Put it in place here so the install below can resolve it.
+    # Keep the version in sync with that file.
+    mkdir -p /etc/yum.repos.d
+    cp /ctx/root/etc/yum.repos.d/kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 
     # Get version
     VERSION_ID=$(grep -oP '(?<=VERSION_ID=)[^"]*' /etc/os-release)

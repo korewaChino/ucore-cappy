@@ -1,0 +1,22 @@
+# Upstream Kubernetes packages (kubelet, kubeadm, kubectl), pinned to a minor.
+#
+# Fedora ships none of these, and deliberately so -- the distro moves fast and
+# the k8s RPMs must match the control plane's minor exactly. pkgs.k8s.io is the
+# project's own repo and the only supported source for them.
+#
+# The minor is pinned rather than a rolling `stable` URL so an image rebuild
+# cannot silently move the whole fleet onto a new Kubernetes minor. This is the
+# same reason bootc-image-policy pins the OS by digest: the node image and the
+# cluster version are one decision, not two.
+#
+# Bump both the version here and build_files/pkg_setup.sh's repofrompath
+# together -- the repofrompath is what the image build actually installs from,
+# this file only pins what a later dnf run on a running node would resolve to.
+[kubernetes]
+name=Kubernetes 1.37
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.37/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.37/rpm/repodata/repomd.xml.key
+repo_gpgcheck=1
+type=rpm

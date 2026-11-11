@@ -8,3 +8,9 @@ enable bootc-fetch-apply-updates.timer
 # in systemd we trust
 disable chronyd
 enable systemd-timesyncd
+
+# kubelet is installed for the kubeadm migration but must not run yet: it binds
+# 10250, the same port k3s's kubelet already owns, and with no config in
+# /etc/kubernetes it would fail and flap. This preset is named 00-* so it wins
+# over any 90-kubernetes.preset the RPM ships.
+disable kubelet.service
