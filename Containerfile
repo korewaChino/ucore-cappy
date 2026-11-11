@@ -6,6 +6,12 @@ COPY build_files /
 FROM ghcr.io/ublue-os/ucore-hci:stable-nvidia-lts
 
 RUN mkdir -p /etc/rancher/k3s /var/lib/rancher/k3s /var/lib/rancher/k3s
+# /var/opt only exists at runtime: /opt is a symlink to it, and the directory is
+# created by tmpfiles (rpm-ostree-autovar.conf) on boot rather than baked into
+# the image. Without it here, any package that owns a path under /opt fails to
+# unpack -- kubernetes-cni, which owns /opt/cni, dies with
+# "failed to open dir opt of /opt/: cpio: mkdir failed - File exists".
+RUN mkdir -p /var/opt
 RUN if [ -f /etc/sysconfig/selinux ]; then \
         sed -i 's/^SELINUX=.*/SELINUX=permissive/' /etc/sysconfig/selinux || echo "Failed to update SELinux configuration file."; \
     fi

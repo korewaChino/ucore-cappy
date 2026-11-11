@@ -70,30 +70,28 @@ package_list=(
     # /usr/libexec/cni, so the two do not collide.
     kubernetes-cni
     cri-tools
-    # Hypervisors. cloud-hypervisor is the point here: it comes from terra
-    # (54.1, matching upstream v54.1) because Fedora only ships libvirt's
-    # cloud-hypervisor *driver*, never the VMM. The package carries
-    # cloud-hypervisor, ch-remote and the vhost-user backends
-    # (vhost_user_block, vhost_user_net), which is the full surface for driving
-    # VMs through its own API rather than through libvirt.
+    # Hypervisors. cloud-hypervisor is the point here, and the only reason
+    # this block exists: it comes from terra (54.1, matching upstream v54.1)
+    # because Fedora ships only libvirt's cloud-hypervisor *driver*, never the
+    # VMM. The package carries cloud-hypervisor, ch-remote and the vhost-user
+    # backends (vhost_user_block, vhost_user_net), which is the full surface for
+    # driving VMs through its own API rather than through libvirt.
     #
     # edk2-cloud-hypervisor-bin is CLOUDHV.fd. cloud-hypervisor has no legacy
     # BIOS path, so a UEFI firmware is mandatory for any guest that boots.
     #
-    # The libvirt stack is separate and stays conventional: qemu is the driver
-    # virt-install and virt-manager expect, and libvirt-daemon-driver-ch lets
-    # libvirt manage cloud-hypervisor domains too, which is handy for
-    # comparison against driving it directly. Installing the driver causes
-    # virtchd.socket to be enabled by the distro preset; nothing is enabled
-    # here by hand.
+    # The libvirt and qemu packages listed after it are ALREADY IN THE BASE
+    # IMAGE (checked against ucore-hci's own rpm list, which carries
+    # libvirt-daemon-kvm, qemu-kvm-core, virt-install, swtpm, edk2-ovmf and
+    # virtiofsd). They are named anyway so a base-image change cannot silently
+    # take them away, but do not read this block as what adds weight -- the
+    # only genuinely new entries here are cloud-hypervisor,
+    # edk2-cloud-hypervisor-bin and libvirt-daemon-driver-ch.
     #
-    # qemu-kvm-core rather than the qemu-kvm meta. Measured: both resolve to
-    # the same 568-package transaction, because the bulk arrives as weak
-    # dependencies of libvirt-daemon-kvm (which recommends qemu-kvm) rather
-    # than from anything named here. Set install_weak_deps=False and libvirt's
-    # share drops to 412, but that flag is global to this install and would
-    # change what every other package in package_list pulls in, so it is not
-    # set. core is still the right name: it is the binary libvirt execs.
+    # libvirt-daemon-config-network is also in the base already, so the default
+    # 192.168.122.0/24 NAT network is defined whether or not it is named here;
+    # it is left out of this list rather than removed, which would mean deleting
+    # it from the base image.
     cloud-hypervisor
     edk2-cloud-hypervisor-bin
     libvirt
@@ -105,11 +103,6 @@ package_list=(
     swtpm
     edk2-ovmf
     virtiofsd
-    # Deliberately NOT libvirt-daemon-config-network: that package defines the
-    # 192.168.122.0/24 NAT network and marks it autostart, which would put an
-    # unmanaged virbr0 and a dnsmasq on every node the moment virtnetworkd
-    # comes up. VM networking here wants a bridge or L2 segment the cluster
-    # knows about, so the default network is left undefined.
 )
 
 install_kompose() {
