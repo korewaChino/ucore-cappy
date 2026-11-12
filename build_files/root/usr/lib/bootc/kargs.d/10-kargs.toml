@@ -1,4 +1,4 @@
-# Mitigations with SMT left on.
+# Mitigations with SMT left on, and the MDS family turned off.
 #
 # The previous value here was "mitigations=auto,nosmt=off", which the kernel
 # rejects outright ("Unsupported mitigations=auto,nosmt=off, system may still be
@@ -7,14 +7,19 @@
 # mds=auto -> full,nosmt, which offlines every sibling thread.
 #
 # These are separate parameters on purpose: mitigations= only accepts off,
-# auto or nosmt. Each one below selects the mitigation that does not require
-# disabling SMT.
+# auto or nosmt.
 #
-#   mds=full            clear CPU buffers on entry/exit, SMT stays enabled
-#   l1tf=flush          L1D flush on VM entry, SMT stays enabled
-#   mmio_stale_data=full  same shape as mds
+#   mds=off               no VERW on kernel entry/exit
+#   mmio_stale_data=off   same family, same cost, same trust assumption
+#   l1tf=flush            L1D flush on VM entry; SMT stays enabled
 #
-# Consequence, accepted deliberately: these nodes run trusted workloads, so the
-# cross-thread channel that L1TF/MDS need is not a threat here, and the halved
-# core count is a cost paid for nothing.
-kargs = ["mitigations=auto", "mds=full", "l1tf=flush", "mmio_stale_data=full"]
+# The MDS family is off deliberately: both exploit a cross-thread buffer that a
+# process can only reach if it is already executing code on the box, and every
+# workload here is trusted. The halved core count and the per-syscall VERW were
+# being paid to defend against an attacker who has already won.
+#
+# L1TF stays mitigated because its threat model is different in one respect: a
+# guest VM reading host memory. /dev/kvm is present on all three nodes and the
+# image carries cloud-hypervisor, so the day a guest runs someone else's code
+# is the day this flag matters. It costs nothing when no VM is entering.
+kargs = ["mitigations=auto", "mds=off", "mmio_stale_data=off", "l1tf=flush"]
