@@ -1,1 +1,20 @@
-kargs = ["mitigations=auto,nosmt=off"]
+# Mitigations with SMT left on.
+#
+# The previous value here was "mitigations=auto,nosmt=off", which the kernel
+# rejects outright ("Unsupported mitigations=auto,nosmt=off, system may still be
+# vulnerable") because nosmt=off is not a thing. The parameter was therefore
+# ignored and the defaults applied, and the default for these CPUs is
+# mds=auto -> full,nosmt, which offlines every sibling thread.
+#
+# These are separate parameters on purpose: mitigations= only accepts off,
+# auto or nosmt. Each one below selects the mitigation that does not require
+# disabling SMT.
+#
+#   mds=full            clear CPU buffers on entry/exit, SMT stays enabled
+#   l1tf=flush          L1D flush on VM entry, SMT stays enabled
+#   mmio_stale_data=full  same shape as mds
+#
+# Consequence, accepted deliberately: these nodes run trusted workloads, so the
+# cross-thread channel that L1TF/MDS need is not a threat here, and the halved
+# core count is a cost paid for nothing.
+kargs = ["mitigations=auto", "mds=full", "l1tf=flush", "mmio_stale_data=full"]
